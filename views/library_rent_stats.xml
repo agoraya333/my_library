@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="rent_stats_view_pivot" model="ir.ui.view">
+        <field name="name">Rent Stats</field>
+        <field name="model">library.book.rent.statistics</field>
+        <field name="arch" type="xml">
+            <pivot string="Pivot View">
+                <field name="book_id" type="row"/>
+                <field name="rent_count" type="row"/>
+                <field name="average_occupation" type="row"/>
+            </pivot>
+        </field>
+    </record>
+
+
+    <record id="action_rent_stats_view_pivot" model="ir.actions.act_window">
+        <field name="name">View Pivot</field>
+        <field name="res_model">library.book.rent.statistics</field>
+        <field name="view_mode">pivot</field>
+    </record>
+
+    <menuitem name="Rent Statistics" id="library_rent_stats_menu" parent="library_base_menu" action="action_rent_stats_view_pivot"/>
+</odoo>

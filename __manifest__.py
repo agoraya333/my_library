@@ -15,6 +15,7 @@
         'views/library_book_inherit.xml',
         'views/library_book_rent.xml',
         'views/custom_settings.xml',
+        'views/library_rent_stats.xml',
         'wizard/library_rent_wizard.xml',
         'wizard/library_return_wizard.xml',
     ],
