@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="library_book_form" model="ir.ui.view">
+        <field name="name">Library Book Form</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="make_available" string="Make Available" class="oe_highlight" type="object"/>
+                    <button name="make_borrowed" string="Make Borrowed" class="oe_highlight" type="object"/>
+                    <button name="make_lost" string="Make Lost" class="oe_highlight" type="object"/>
+                    <button name="make_draft" string="Make Unavailable" class="oe_highlight" type="object"/>
+                    <button name="average_book_occupation" string="Log Average Occ." type="object"/>
+                    <!--                    <button name="change_release_date" string="Update Date" class="oe_highlight" type="object"/>-->
+                    <!--                    <button name="find_book" string="Find Book" class="oe_highlight" type="object"/>-->
+                    <!--                    <button name="get_archives" string="Find Archives" class="oe_highlight" type="object"/>-->
+                    <!--                    <button name="filter_records" string="Get Books" class="oe_highlight" type="object"/>-->
+                    <!--                    <button name="full_name" string="Get Full Name" class="oe_highlight" type="object"/>-->
+                    <!--                    <button name="sort_records" string="Sort Records" class="oe_highlight" type="object"/>-->
+                    <!--                    <button name="combining_recordsets" string="Combining RecordSets" class="oe_highlight" type="object"/>-->
+                    <!--                    <button name="filtered_model" string="Filtered Model" class="oe_highlight" type="object"/>-->
+                    <!--                    <button name="mapped_model" string="Mapped Model" class="oe_highlight" type="object"/>-->
+                    <!--                    <button name="sorted_model" string="Sorted Model" class="oe_highlight" type="object"/>-->
+                    <!--                    <button name="grouped_data" string="Grouped Data" class="btn-primary" type="object"/>-->
+                    <button name="book_rent" string="Rent this book" type="object" class="btn-primary"/>
+                    <button name="return_all_books" string="Return all book" type="object" class="btn-primary" groups="my_library.group_self_borrow"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="active"/>
+                            <field name="name"/>
+                            <field name="isbn"/>
+                            <field name="author_ids" widget="many2many_tags"/>
+                            <!--                        <field name="pages"/>-->
+                            <!--                        <field name="notes"/>-->
+                            <!--                        <field name="cost_price"/>-->
+                            <!--                        <field name="retail_price"/>-->
+                            <!--                        <field name="currency_id"/>-->
+                            <!--                        <field name="ref_doc_id"/>-->
+                            <!--                        <field name="manager_remarks"/>-->
+                            <field name="old_edition"/>
+                            <!--                        <field name="description" string="Description"/>-->
+                        </group>
+
+                        <group>
+                            <!--                        <field name="date_release"/>-->
+                            <field name="short_name"/>
+                            <!--                        <field name="date_updated"/>-->
+                            <field name="category_id"/>
+                            <!--                        <field name="currency_symbol"/>-->
+                            <!--                        <field name="age_days"/>-->
+                            <!--                        <button name="log_all_library_members" string="Log Members" type="object"/>-->
+                            <!--                        <field name="cover" widget="image" class="oe_avatar"/>-->
+                        </group>
+                        <group>
+                            <notebook>
+
+                            </notebook>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="library_book_view_tree" model="ir.ui.view">
+        <field name="name">Library Book List</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="state"/>
+                <field name="retail_price"/>
+                <field name="date_release"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="library_book_view_search" model="ir.ui.view">
+        <field name="name">Library Book Search</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="author_ids"/>
+                <filter string="No Authors"
+                        name="without_author"
+                        domain="[('author_ids','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id='library_book_action' model='ir.actions.act_window'>
+        <field name="name">Library Books</field>
+        <field name="res_model">library.book</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="change_state_action" model="ir.actions.server">
+        <field name="name">Make Available</field>
+        <field name="model_id" ref="model_library_book"/>
+        <field name="binding_model_id" ref="model_library_book"/>
+        <field name="state">code</field>
+        <field name="code">
+            records.make_available()
+        </field>
+    </record>
+
+    <!--    it is used for client action-->
+    <!--    <record id="example_client_action" model="ir.actions.client">-->
+    <!--        <field name="name">Pdf Report</field>-->
+    <!--        <field name="tag">pdf_report_page</field>-->
+    <!--    </record>-->
+    <!--    <menuitem id="example_menuitem" name="Reporting" parent="library_base_menu"-->
+    <!--              action="example_client_action"/>-->
+
+
+    <record id="schedule_book_availability_action" model="ir.cron">
+        <field name="name">Schedule Availability</field>
+        <field name="model_id" ref="model_library_book"/>
+        <field name="state">code</field>
+        <field name="code">
+            record.make_available()
+        </field>
+        <field name="interval_number">14</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+    </record>
+
+    <menuitem name="My Library" id="library_base_menu"/>
+    <menuitem name="Books" id="library_book_menu" parent="library_base_menu" action="library_book_action"/>
+</odoo>

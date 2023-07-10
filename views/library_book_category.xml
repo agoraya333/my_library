@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="library_category_form" model="ir.ui.view">
+        <field name="name">Library Category Form</field>
+        <field name="model">library.book.category</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="parent_id"/>
+                        <button name="create_categories" string="Create Categories" type="object"/>
+                        <field name="child_ids"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="library_category_view_tree" model="ir.ui.view">
+        <field name="name">Library Category List</field>
+        <field name="model">library.book.category</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="parent_id"/>
+                <field name="child_ids"/>
+            </tree>
+        </field>
+    </record>
+
+<!--    <record id="library_book_view_search" model="ir.ui.view">-->
+<!--        <field name="name">Library Book Search</field>-->
+<!--        <field name="model">library.book</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <search>-->
+<!--                <field name="name"/>-->
+<!--                <field name="author_ids"/>-->
+<!--                <filter string="No Authors"-->
+<!--                name="without_author"-->
+<!--                domain="[('author_ids','=',False)]"/>-->
+<!--            </search>-->
+<!--        </field>-->
+<!--    </record>-->
+
+    <record id='library_category_action' model='ir.actions.act_window'>
+        <field name="name">Library Category</field>
+        <field name="res_model">library.book.category</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Category" id="library_categories_menu" parent="library_base_menu" action="library_category_action"/>
+</odoo>

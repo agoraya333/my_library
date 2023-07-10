@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="book_rent_form" model="ir.ui.view">
+        <field name="name">Library Rent Form</field>
+        <field name="model">library.book.rent</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <!--                    <button name="book_lost" string="Lost the Book" states="ongoing" type="object"/>-->
+                </header>
+                <sheet>
+                    <group>
+                        <field name="book_id"/>
+                        <field name="borrower_id"/>
+                        <button name="renting_state"/>
+                        <field name="rent_date"/>
+                        <field name="return_date"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="library_rent_view_tree" model="ir.ui.view">
+        <field name="name">Library Rent List</field>
+        <field name="model">library.book.rent</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="book_id"/>
+                <field name="borrower_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id='library_rent_action' model='ir.actions.act_window'>
+        <field name="name">Library Rent</field>
+        <field name="res_model">library.book.rent</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Renting" id="library_renting_menu" parent="library_base_menu" action="library_rent_action"/>
+    <menuitem name="Renting" id="library_rent_menu" parent="library_renting_menu" action="library_rent_action"/>
+</odoo>
